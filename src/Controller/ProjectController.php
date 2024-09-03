@@ -29,7 +29,7 @@ class ProjectController extends AbstractController
     }
     
     /**
-     * @Route("/", name="project_index", methods={"GET"})
+     * @Route("/", name="project_index", methods={"GET", "POST"})
      */
     public function index(ProjectRepository $repo, Request $request): Response
     {
