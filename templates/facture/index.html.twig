@@ -1,0 +1,152 @@
+{% extends 'base.html.twig' %}
+{% block title %}Editer une facture
+{% endblock %}
+{% block body %}
+<h1 class='my-5'>Détermine ta prochaine facture</h1>
+<p>Choisis la période souhaitée</p>
+
+<form id="date_facture" class="form-group" method="POST" action="{{ path('facture_ajax', { 'id': project.id }) }}">
+
+
+	<input class="form-control" type="date" name="from" value="from" id='from' required>
+	<p>
+		au
+	</p>
+	<input class="form-control" type="date" name="to" id="to" value="to" required>
+	<button class="btn btn-outline-warning js-button">Valider</button>
+
+</form>
+
+<div class="jumbotron">
+<p class="lead">Facture du
+	<span class='js-from'>
+		{% if from != fromStart %}
+			{{ from | date('d-m-Y') }}
+		{% else %}
+			{{ fromStart | date('d-m-Y') }}
+		{% endif %}
+	</span>
+		
+		au
+		<span class='js-to'>
+			{% if to != today %}
+				{{ to | date('d-m-Y') }}
+			{% else %}
+				{{ today | date('d-m-Y') }}
+			{% endif %}
+		</span>
+		
+	</p>
+	<hr class="my-4">
+	<table class="table table-hover my-6">
+		<tbody>
+			<tr class="mx-4">
+				<td scope="row">Nom du projet :</td>
+				<td class='js-projectName' scope="row">{{ project.name }}</td>
+
+			</tr>
+			<tr>
+				<td scope="row ">Nombres d'heures travaillées :</td>
+				{% if hour != null %}
+				<td class='js-hour' scope="row">{{hour}} heures</td>
+				{% else %}
+				<td class='js-hour' scope="row">{{hours}} heures</td>
+				{% endif %}
+
+			</tr>
+			{% if project.price > 0 %}
+			<tr>
+				<td scope="row">Taux horaire :</td>
+				<td scope="row">{{project.price}}
+					€</td>
+			</tr>
+			<tr class='table-warning'>
+				<td scope="row">Montant total :</td>
+				{% if hour != null %}
+					<td class='js-montant' scope="row">{{ hour*project.price }}
+						€</td>
+				{% else %}
+					<td class='js-montant' scope="row">{{ hours*project.price }}
+						€</td>
+				{% endif %}
+			</tr>
+			{% else %}
+				<tr>
+					<td scope="row">Tarif au forfait :</td>
+					<td scope="row">{{project.forfait}}
+						€</td>
+				</tr>
+			{% endif %}
+			<tr>
+				<td scope="row">Date de paiement :</td>
+				<td scope="row">{{ payDate }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p class="lead">
+		<a class="btn btn-primary btn-lg" href="{{ path('tasks_index', {'id': project.id}) }}" role="button">Retour à
+			mon projet</a>
+	</p>
+</div>
+{% endblock %}
+{% block javascripts %}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+	integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script>
+	$(document).ready(function () {
+		
+$(".js-button").click(function (e) {
+	
+	var to = $('#to').val();
+	var from = $('#from').val();
+	
+	e.preventDefault();
+
+			$.ajax({
+				url: '{{ path('facture_ajax', {'id': project.id }) }}',
+				method: 'POST',
+				dataType: 'json',
+				data: {to:to, from:from},
+
+})
+
+				.done(function (data) {
+				if(from == "") {
+				from = data.data.fromStart
+				}
+				if(to == "") {
+				to = data.data.today
+				}
+				to = getGoodDateFormat(to);
+				from = getGoodDateFormat(from);
+				
+				var montantTotal = data.data.hour * data.data.projectPrice;
+				var montantTotalProject = data.data.hours * data.data.projectPrice;
+			
+				var jsFrom = $('.js-from').text(from);
+				var jsTo = $('.js-to').text(to);
+				var jsHour = $('.js-hour').text(data.data.hour + ' heures');
+				var jsMontant = $('.js-montant').text(montantTotal + ' €');
+				if(data.data.hour == "") {
+					var jsHour = $('.js-hour').text('0 heure');
+					var jsMontant = $('.js-montant').text('0 €');
+				}
+				
+				})
+				.fail(function (err) {
+					alert('La requête Ajax a grave foiré !!!');
+				});
+			
+		});
+		function getGoodDateFormat(string) {
+			const stringSplitted = string.split('-')
+			const year = stringSplitted[0];
+		const month = stringSplitted[1];
+		const day = stringSplitted[2];
+		return day+'-'+month+'-'+year
+		}
+	});
+</script>
+
+{% endblock %}

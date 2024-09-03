@@ -1,19 +1,50 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
-</html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Freelance Time Manager
+			{% endblock %}
+		</title>
+		<link href="https://bootswatch.com/4/slate/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+		{% block stylesheets %}
+			<link href="{{ asset('css/main.css') }}" type="text/css" rel="stylesheet"/>
+		{% endblock %}
+	</head>
+
+	<body>
+		<header>
+
+			{{ include('home/nav.html.twig') }}
+			<h1 class="text-warning text-center my-4 py-3">Freelance Time Manager</h1>
+		</header>
+		<div class="container"> {% block body %}{% endblock %}
+			</div>
+			<footer>
+				<div class="d-flex row justify-content-around bg-primary">
+					<p class='text-warning'>Made with
+						<i class="fas fa-heart text-danger"></i>
+						by Olivia Coffineau - &copy;2024</p>
+					{# <a class='text-warning' href="">Contact</a> #}
+				</div>
+
+			</footer>
+			{% block javascripts %}
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+				<script>
+					$(document).ready(function () {
+                        $('.datepicker').datepicker({
+                        format: 'yyyy-mm-dd', autoclose: true, todayHighlight: true, setDate: new Date() // Affiche la date du jour par défaut
+                        }).on('show', function (e) { // Assurez-vous que le date picker s'affiche correctement lors du clic
+                        $(this).datepicker('update', new Date());
+                        });
+                    });
+				</script>
+			{% endblock %}
+		</body>
+
+	</html>

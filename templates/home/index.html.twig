@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %} {% block title %}FreelanceTimeManager{% endblock %} {% block body %}
+
+    {% if app.user != null %}
+	{% if projects != null %}
+    <div class='my-4 px-4' style='width:75%'>
+		{{ form_start(form) }}
+		{{ form_errors(form)}}
+		{{ form_widget(form) }}
+		<button class="btn btn-outline-warning">{{ button_label|default('Chercher') }}</button>
+		{{ form_end(form) }}
+		{% for label, messages in app.flashes %}
+			{% for message in messages %}
+				<div class="alert alert-{{ label }} alert-dismissible fade show">
+					{{ message }}
+				</div>
+			{% endfor %}
+		{% endfor %}
+	</div>
+{% endif %}
+{% endif %}
+<div class="welcome my-4">
+    <h3>{{titlePage}}</h3>
+    <p class="pt-3">Bonjour {% if user.id != null %}{{ user.fistname }}{% endif %}</p>
+    <p>Freelance Time Manager est une application de gestion de projet pour les freelances.</p>
+    <p>Tu peux ainsi créer un nouveau projet, décrire chaque étape des travaux effectués, calculer tes honoraires et
+        éditer une facture.</p>
+    {% if user.id == null %}
+    <p class="pt-3"><a href="{{ path('app_login') }}" class="btn btn-outline-warning">Connecte toi</a></p>
+    <p class="pb-4">Si tu n'as pas encore de compte :<br /><a href="{{ path('app_register') }}" class="btn btn-outline-secondary my-4">Inscris-toi</a> </p>
+    {% endif %}
+   
+{% if user.id != null %}
+{% if projects %}
+     <h4 class="py-3">Voici tes projets en cours</h4>
+    <table class='table'>
+        <thead>
+            <tr class='table-warning'>
+                <th>Nom du projet</th>
+                <th>Date de début</th>
+                <th>Tarif
+                    <br />(horaire ou au forfait)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for project in projects %}
+            <tr>
+                <td>{{ project.name }}</td>
+                <td>{{ project.startDate | date('d-m-Y') }}</td>
+                {% if project.price > 0 %}
+                <td>{{ project.price }}
+                    €/heure</td>
+                {% else %}
+                <td>{{ project.forfait }}
+                    €</td>
+                {% endif %}
+                <td>
+                    <a href="{{ path('tasks_index', {'id': project.id}) }}" class="btn btn-light">Voir le projet</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p class="py-3">Tu n'as encore aucun projet. Tu peux en créer en cliquant ci-dessous : </p>
+    <a class="btn btn-outline-warning" href="{{ path('client_new') }}">Créer un projet</a>
+{% endif %}
+    {% endif %}
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,8 @@
+<div class="mt-2">
+<form method="post" action="{{ path('project_delete', {'id': project.id}) }}" onsubmit="return confirm('Etes-vous sur de vouloir supprimer le projet : {{ project.name }} ? Cette action est irréversible.');" class="d-flex flex-column align-item-right">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ project.id) }}">
+    <button class="btn btn-danger">Supprimer mon projet</button>
+</form>
+<p class="text-danger"><small><i class="fa fa-exclamation-triangle"></i> La suppression de ton projet entrainera<br />la suppression de toutes les tâches associées.</small></p>
+</div>

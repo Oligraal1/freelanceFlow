@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block title %}Editer une facture pour
+	{{ project.name }}
+{% endblock %}
+{% block body %}
+	<h1 class='my-5'>Editer une facture pour
+		{{ project.name }}</h1>
+
+	<p>Renseigne les différents champs pour générer un PDF.</p>
+
+	<form id="date_facture" class="form-group" method="post" action="{{ path('facture_pdf', {'id': project.id}) }}">
+		<input class="form-control" type="date" name="from" value="from">
+		<p>
+			au
+		</p>
+		<input class="form-control" type="date" name="to" value="to">
+		<label for="num_facture">Entre le numéro de la facture</label>
+		<input class="form-control" type="text" name="num_facture" placeholder="date-mois-numéro de la facture">
+		<label for="prestation">Choisis la prestation réalisée</label>
+		<select class="form-control" name="prestation">
+
+<option value="Maintenance informatique du site :">Maintenance informatique du site :
+	{{ project.name }}</option>
+
+		<option value="Création d'un nouveau projet :">Création d'un nouveau projet :
+		{{ project.name }}
+	</option>
+	<option value="Amélioration du projet :">Amélioration du projet :
+	{{ project.name }}</option></select>
+
+    <button class="btn btn-outline-warning" target='blank'>Générer le PDF</button></form>
+	<p class="lead"><a class="btn btn-primary btn-lg" href="{{ path('facture', {'id': project.id}) }}" role="button">Retour à ma facture</a></p></div>{% endblock %}

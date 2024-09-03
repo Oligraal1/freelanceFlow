@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %} {% block title %}New Tasks{% endblock %} {% block body %}
+<h1 class='py-4'>Ajouter une tâche à mon projet {{ projectName }}</h1>
+
+{{ include('tasks/_form.html.twig') }}
+<div>
+	<a class='btn btn-outline-secondary' href="{{ path('tasks_index', {'id': project.id}) }}">Annuler</a>
+</div>
+{% endblock %}

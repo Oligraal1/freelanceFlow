@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %} {% block title %}Nouveau Projet{% endblock %} {% form_theme form 'bootstrap_4_layout.html.twig' %} {% block body %}
+<div class='container'>
+    <h1 class='py-4'>Créer un nouveau projet</h1>
+
+    {{ include('project/_form.html.twig') }}
+
+<a class='btn btn-outline-secondary' href="{{ path('home') }}">Retour à Mes projets</a>
+
+</div>
+{% endblock %}

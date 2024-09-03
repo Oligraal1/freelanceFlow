@@ -1,0 +1,43 @@
+        {% extends 'base.html.twig' %}
+        {% block title %}Closure Project
+        {% endblock %}
+        {% block body %}
+
+        <div class="d-flex justify-content-between">
+            <div>
+                <a class='btn btn-outline-secondary mt-2' href="{{ path('tasks_index', {'id': project.id}) }}">Retour à
+                    mon projet</a>
+            </div>
+        </div>
+        <h1 class='my-5'>Clôturer le projet : {{ project.name }}</h1>
+        {% if project.endDate == null %}
+        <div style="width:50%">
+            {{ form_start(form) }}
+            <div class="my-custom-class-for-errors">
+                {{ form_errors(form) }}
+            </div>
+            <div>
+                <div class="col">
+                    <div class="row">
+                        {{ form_row(form.endDate) }}
+                    </div>
+                </div>
+                <button class='btn btn-outline-warning mb-5' style="width:100%">
+                    {{ button_label|default('Clôturer') }}
+                </button>
+            </div>
+        </div>
+        {{ form_end(form) }}
+        </div>
+        {% else %}
+        <div style="width:50%">
+            <div>
+                <form action="{{ path('project_closure', { 'id': project.id }) }}" method="post">
+                    <button class='btn btn-outline-warning mb-5' style="width:100%">
+                        {{ button_label|default('Réouvrir le projet') }}
+                    </button>
+                </form>
+            </div>
+        </div> #}
+        {% endif %}
+        {% endblock %}

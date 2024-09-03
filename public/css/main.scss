@@ -1,0 +1,52 @@
+header {
+    background-image: url(../img/city.webp);
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0 0 100px;
+}
+
+#date_facture {
+    width: 25%;
+}
+
+.searchForm {
+    width: 25%;
+}
+
+.form-group {
+    width: 100%;
+}
+
+//page tasks_index
+.hidden {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+.hidden2 {
+    display: none;
+}
+
+.show2 {
+    display: block;
+}
+
+//footer
+footer {
+    background-image: url(../img/city.webp);
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 150px 0 0;
+    div {
+        margin: 150px 0 0;
+        padding: 10px 0 0;
+        font-size: 0.8rem;
+    }
+}

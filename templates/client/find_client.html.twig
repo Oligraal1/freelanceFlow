@@ -1,0 +1,19 @@
+<h1 class="my-4">Choisis un client existant</h1>
+<form class="form-group" method="post" action="{{ path('client_find_client') }}">
+	<select class="form-control" name="client">
+		<option value="null">---</option>
+
+		{% for cli in clients %}
+			<option value="{{ cli.name }}">{{ cli.name }}</option>
+		{% endfor %}
+	</select>
+	<button class="btn btn-outline-warning">Valider</button>
+</form>
+{% for label, messages in app.flashes %}
+	{% for message in messages %}
+		<div class="alert alert-{{ label }} alert-dismissible fade show">
+			{{ message }}
+		</div>
+	{% endfor %}
+{% endfor %}
+

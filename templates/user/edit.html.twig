@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %} {% block title %}Edit Profile{% endblock %} {% block body %}
+
+<div class="d-flex justify-content-between">
+<div>
+	<a class='btn btn-outline-secondary mt-2' href="{{ path('user') }}">Retour à mon profil</a>
+</div>
+
+{# {{ include('user/_delete_form.html.twig') }} #}
+
+</div>
+<h1 class='my-5'>Modifier mon profil : {{ user.name }}</h1>
+
+{{ include('user/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+</div> {% endblock %}

@@ -1,0 +1,107 @@
+<div style="width:50%">
+    {{ form_start(form) }}
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(form) }}
+    </div>
+    <div>
+        <div class="col">
+            <div class="row">
+                {{ form_row(form.name) }}
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="row">
+                {{ form_row(form.startDate) }}
+            </div>
+        </div>
+        <div class="col hide">
+            <div class="col">
+                <div class="row">
+                    <div class="form-group" style="text-align:center">
+                        <label for="tarif">Choisis le tarif applicable à ce projet</label>
+                        <div class='d-flex justify-content-around'>
+                        <select name="tarif" id="tarif" class="form-control">
+                            <option value="blank">- Sélectionner le tarif -</option>
+                            <option value="horaire">Tarif horaire</option>
+                            <option value="forfait">Tarif au forfait</option>
+                        </select>
+                         <div class="px-4">
+                    <button class="btn btn-outline-warning mb-4" id="tarifChosen" style='width:100%'>Choisir</button>
+                </div>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+            
+               
+           
+        </div>
+        <div id="formProject" hidden>
+
+            <div class="col">
+                <div class="row" id="js-price">
+                    {{ form_row(form.price) }}
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="row" id="js-forfait">
+                    {{ form_row(form.forfait) }}
+                </div>
+            </div>
+            <button class='btn btn-outline-warning mb-5' style="width:100%">
+                {{ button_label|default('Enregistrer') }}
+            </button>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+</div>
+{# {{ form_start(form) }}
+{{ form_errors(form)}}
+{{ form_widget(form) }}
+<button class='btn btn-outline-warning'>
+	{{ button_label|default('Enregistrer') }}
+</button>
+{{ form_end(form) }} #}
+
+{% block javascript %}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+<script>
+    $('#tarifChosen').click(function (e) {
+        e.preventDefault();
+        (console.log('olivia'))
+        $("#formProject").removeAttr("hidden");
+        var tarif = $("#tarif").val();
+        console.log(tarif);
+        switch (tarif) {
+            case "horaire": {
+                $("#js-price").show();
+                console.log("PRICE : Il faut trouver x : " + $("#project_forfait").val());
+
+
+                $("#project_forfait").val(0);
+                console.log("PRICE : Il faut trouver 0 : " + $("#project_forfait").val());
+                $(".hide").hide();
+                $("#js-forfait").hide();
+            }
+            break;
+            case "forfait": {
+                $("#js-forfait").show();
+                console.log("FORFAIT : Il faut trouver x : " + $("#project_price").val());
+                $("#project_price").val(0);
+                console.log("FORFAIT : Il faut trouver 0 : " + $("#project_price").val());
+                $(".hide").hide();
+                $("#js-price").hide();
+            }
+            break;
+            default:
+                window.alert("Merci de choisir un tarif")
+        }
+    })
+</script>
+
+{% endblock %}

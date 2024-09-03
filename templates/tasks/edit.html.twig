@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %} {% block title %}Edit Tasks{% endblock %} {% block body %}
+<h1 class='my-5'>Modifier mes tâches</h1>
+
+{{ include('tasks/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+<div class="d-flex justify-content-between">
+
+ {{ include('tasks/_delete_form.html.twig') }}
+ <div>
+<a class='btn btn-outline-secondary' href="{{ path('tasks_show', {'id': task.id}) }}">Retour à mes tâches</a>
+</div>
+ </div>
+{% endblock %}

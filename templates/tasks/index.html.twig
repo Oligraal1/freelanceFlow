@@ -1,0 +1,291 @@
+			{% extends 'base.html.twig' %}
+			{% block title %}Mes tâches
+			{% endblock %}
+			{% block body %}
+			<div class="card mb-5">
+				<div class="d-flex justify-content-between">
+					<h3 class="card-header text-warning">
+						{{ project.name }}</h3>
+					{% if project.endDate != null %}
+					<p class="card-header bg-danger text-light">Projet clôturé le :
+						{{ project.endDate | date('d-m-Y') }}</p>
+					{% endif %}
+					<a class="btn btn-primary text-warning" href="{{ path('project_edit', {'id': project.id}) }}">Modifier
+						{% if project.endDate != null %}ou réouvrir {% else %}ou clôturer {% endif %}le projet</a>
+				</div>
+
+				<div class="card-body">
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">Client :
+							<a href="{{ path('client_show', {'id': project.idClient.id}) }}">{{ project.IdClient.name }}</a></li>
+						<li class="list-group-item">Début du projet :
+							{{ project.startDate | date('d-m-Y') }}</li>
+						{% if project.price > 0 %}
+						<li class="list-group-item">Tarif horaire :
+							{{ project.price }} €</li>
+						{% else %}
+						<li class="list-group-item">Tarif au forfait :
+							{{ project.forfait }} €</li>
+						{% endif %}
+
+						{% if counthour %}
+						<li class="list-group-item">Total des heures travaillées :
+							{{ counthour }}
+							{% if counthour == 1  %}
+							heure
+							{% else %}
+							heures
+							{% endif %}</li>
+
+						{% if project.price > 0 %}
+						<li class='list-group-item'>Montant total : {{ counthour * project.price }} €</li>
+						{% endif %}
+						{% endif %}
+					</ul>
+					{% if project.endDate == null %}
+					<div class='d-flex justify-content-left'>
+						<a class="btn btn-outline-warning" href="{{ path('facture', {'id': project.id}) }}">Simuler la facture en
+							ligne</a>
+						<a class="btn btn-outline-warning" href="{{ path('facture_edit', {'id': project.id}) }}"
+							target="blank">Prévisualiser la facture en PDF</a>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+
+			<h3 class="mx-2 my-4">Les tâches de {{ project.name }}</h3>
+			<div class='d-flex justify-content-between mb-4'>
+				<button class='btn btn-outline-secondary' id='js-seeAll'>Voir toutes les tâches</button>
+				<form action="" method="post">
+					<select class="btn btn-outline-secondary mb-3" name="tri" id="tri">
+						<option value="title" selected>Trier les tâches</option>
+						<option value="croissant" id='js-croissant'>de la plus ancienne à la plus récente</option>
+						<option value="decroissant" id='js-decroissant'>de la plus récente à la plus ancienne</option>
+					</select>
+				</form>
+			</div>
+			<div id='js-allTasksAll'>
+				<div class='show' id='js-allTasks'>
+					<table class='table my-3' id='js-tasktbody'>
+						<thead>
+							<tr class='table-warning'>
+								<th>Nom de la tâche</th>
+								<th>Date de la tâche</th>
+								<th>Heures travaillées</th>
+								{% if project.endDate == null %}
+								<th><a class='btn btn-outline-primary' href="{{ path('tasks_new', {'id': project.id}) }}">Ajouter
+										une
+										nouvelle tâche</a></th>
+								{% else %}
+								<th></th>
+								{% endif %}
+							</tr>
+						</thead>
+						<tbody>
+						<div id='js-div2' class='hidden'>
+						
+						</div>
+							<div id='js-div' class='show'>
+								{% if tasks %}
+									{% for task in tasks %}
+									<tr id='js-tr'>
+										<td id='js-task-name'>{{ task.name }}</td>
+										<td id='js-task-date'>{{ task.taskDate | date('d-m-Y') }}</td>
+										<td id='js-task-hours'>{{ task.hourWorked }} {% if task.hourWorked == 1  %}
+											heure
+											{% else %}
+											heures
+											{% endif %}</td>
+										<td>
+											<a class='btn btn-outline-secondary' href="{{ path('tasks_show', {'id': task.id}) }}">Voir le
+												détail</a>
+											{% if project.endDate == null %}
+											<a class='btn btn-outline-warning' href="{{ path('tasks_edit', {'id': task.id}) }}">Modifier
+												la
+												tâche</a>
+											{% endif %}
+										</td>
+									</tr>
+									{% endfor %}
+									{% endif %}
+							</div>
+							
+						</tbody>
+					</table>
+				</div>
+				<div class='hidden' id='js-allTasks2'>
+					<table class='table my-3' id='js-tasktbody2'>
+					<thead>
+						<tr class='table-warning'>
+							<th>Nom de la tâche</th>
+							<th>Date de la tâche</th>
+							<th>Heures travaillées</th>
+							{% if project.endDate == null %}
+							<th><a class='btn btn-outline-primary' href="{{ path('tasks_new', {'id': project.id}) }}">Ajouter une
+									nouvelle tâche</a></th>
+							{% else %}
+							<th></th>
+							{% endif %}
+						</tr>
+					</thead>
+					<tbody>
+						{% if tasksAsc %}	
+						{% for taskAsc in tasksAsc %}
+						<tr>
+							<td id='js-task-name'>{{ taskAsc.name }}</td>
+							<td id='js-task-date'>{{ taskAsc.taskDate | date('d-m-Y') }}</td>
+							<td id='js-task-hours'>{{ taskAsc.hourWorked }} 
+							{% if taskAsc.hourWorked == 1  %}
+								heure
+							{% else %}
+								heures
+							{% endif %}</td>
+							<td>
+								<a class='btn btn-outline-secondary' href="{{ path('tasks_show', {'id': taskAsc.id}) }}">Voir le
+									détail</a>
+								{% if project.endDate == null %}
+								<a class='btn btn-outline-warning' href="{{ path('tasks_edit', {'id': taskAsc.id}) }}">Modifier
+									la tâche</a>
+								{% endif %}
+							</td>
+						</tr>
+						{% endfor %}
+						{% endif %}
+					</tbody>
+				</table>
+				</div>
+			</div>
+
+			{% if project.endDate == null %}
+			<div class='my-5'>
+				<a class='btn btn-warning' href="{{ path('tasks_new', {'id': project.id}) }}">Ajouter une nouvelle tâche</a>
+			</div>
+			{% endif %}
+			{% endblock %}
+			{% block javascripts %}
+			<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+				integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+			<script>
+				$(document).ready(function () {
+					var allTasks = document.querySelector("#js-allTasks");
+					var allTasksAll = document.querySelector("#js-allTasksAll");
+					var allTasks2 = document.querySelector("#js-allTasks2");
+					var tri = document.querySelector("select");
+					var tasktbody = document.getElementById("js-tasktbody");
+					var taskBody = document.querySelector("#js-tasktbody");
+					var taskBody2 = document.querySelector("#js-tasktbody2");
+					var tr = document.querySelector('#js-tr');
+					var div = document.querySelector('#js-div');
+					var div2 = document.querySelector('#js-div2');
+
+					$("#js-seeAll").click(function () {
+						if (allTasksAll.classList == 'hidden2') {
+							showAll();
+						} else {
+							removeAll();
+						}
+					});
+
+					tri.addEventListener('change', function (e) {
+						e.preventDefault();
+						var triValue = this.value;
+						var croissant = $('#js-croissant').val();
+						var decroissant = $('#js-decroissant').val();
+
+						$.ajax({
+								url: '{{ path('tasks_ajax', {'id': project.id }) }}',
+								method: 'POST',
+								dataType: 'json',
+								data: {
+									croissant: croissant,
+									decroissant: decroissant,
+									triValue: triValue
+								},
+
+							})
+							.done(function (data) {
+								console.log(data.data)
+								var tasks = data.data.tasks;
+								var tasksAsc = data.data.tasksAsc;
+
+								console.log(tasks);
+							
+								if (data.data.triValue == 'croissant')
+								{ 
+									showCroissant();
+								//	for (t in tasks) {
+										
+									//	var date = dateFR(tasks[t].date.date);
+									
+										//console.log("NAME : "+tasks[t].hour);
+										//var td = tr.append($('<td>'));
+									//$('js-div2').append($('<tr>').attr('id','#js-tr'));
+									//	$('#js-tr').append($('<td>').text(tasks[t].name));
+									//	$('#js-tr').append($('<td>').text(date));
+									//	$('#js-tr').append($('<td>').text(tasks[t].hour + 'heures'));
+
+										//tr.append('<td>'+date+'</td>');
+										//tr.append('<td>'+tasks[t].hour+'</td>');
+										
+									//	$('#js-task-name').innerHTML = tasks[t].name
+									//	$('#js-task-date').innerHTML = date;
+									//	$('#js-task-hours').text(tasks[t].hour + 'heures');
+								//	}	
+								} else {
+									
+									showDecroissant();
+									//for(t in tasksAsc){
+									//	var date = dateFR(tasksAsc[t].date.date);
+									//	console.log("DATE : "+date);
+								//	$('#js-task-name').text(tasksAsc[t].name);
+								//	$('#js-task-date').text(date);
+								//	$('#js-task-hours').text(tasksAsc[t].hour);
+									}
+									
+							//	}
+								
+							})
+							.fail(function (err) {
+								alert('La requête Ajax a grave foiré !!!');
+							});
+					});
+
+					function showCroissant() {
+						allTasks.classList.add('show');
+						allTasks2.classList.add('hidden');
+						allTasks.classList.remove('hidden');
+						allTasks2.classList.remove('show');
+						//div2.classList.add('show');
+						//div2.classList.remove('hidden');
+						//div.classList.add('hidden');
+						//div.classList.remove('show');
+					}
+
+					function showDecroissant() {
+						allTasks.classList.add('hidden');
+						allTasks2.classList.add('show');
+						allTasks.classList.remove('show');
+						allTasks2.classList.remove('hidden');
+					}
+
+					function showAll() {
+						allTasksAll.classList.add("show2");
+						allTasksAll.classList.remove("hidden2");
+					}
+
+					function removeAll() {
+						allTasksAll.classList.remove("show2");
+						allTasksAll.classList.add("hidden2");
+					}
+					function dateFR(completeDate){
+						var dateEN = completeDate.substr(0, 10);
+						var year = dateEN.substr(0, 4);
+						var month = dateEN.substr(5, 2);
+						var day = dateEN.substr(8, 2);
+						var date = day + '-' + month + '-' + year;
+						return date;
+					}
+				})
+			</script>
+
+			{% endblock %}

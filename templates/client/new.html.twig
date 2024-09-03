@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Client{% endblock %}
+
+{% block body %}
+<div class="alert alert-dismissible alert-secondary my-4">
+	<h4 class="alert-heading">Attention</h4>
+	<h5 class="my-4">Si le client de ton nouveau projet existe déjà, merci de le sélectionner dans la liste ci-dessous. Sinon, il faut renseigner le nouveau client.</h5>
+</div>
+
+
+{{include('client/find_client.html.twig')}}
+
+
+<p class="my-4">Ou</p>
+
+<div class='d-flex justify-content-between'>
+<h1 class="my-4">Renseigne un nouveau client</h1>
+
+</div>
+
+<div class="center-block mx-2">
+
+    {{ include('client/_form.html.twig') }}
+</div>
+<a class="my-4 btn btn-outline-secondary" href="{{ path('home') }}">Accueil</a>
+
+{% endblock %}

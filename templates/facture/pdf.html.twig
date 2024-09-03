@@ -1,0 +1,157 @@
+<page backtop="10mm" backbottom="10mm" backleft="12mm" backright="12mm">
+	<page_header>
+		<p style="text-align:right; padding-right:20px;">{{ today | date('d-m-Y') }}</p>
+	</page_header>
+	<h2 style="text-align:center; margin:50px 0 50px;">Facture n°
+
+		{{ num_facture }}</h2>
+
+	<table style="margin:25px 0 15px; width:100%;">
+
+		<thead>
+			<tr>
+				<th colrow="50%" style="font-size:18px; font-weight:bold; padding: 10px 50px 5px 15px;">
+					{{ user.fistname }} {{ user.name| upper }}</th>
+				<th style="padding:10px 50px 5px 15px;"></th>
+				<th colrow="50%" style="padding: 10px 15px 5px 50px;">A L’ATTENTION DE :</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td style="padding: 5px 50px 5px 15px;font-weight:bold;">{{ user.profession }}</td>
+				<td style="padding: 5px 50px 5px 15px;"></td>
+				<td style="padding: 5px 15px 5px 50px; font-weight:bold; font-size:18px;">{{ project.IdClient.name }}
+				</td>
+			</tr>
+			<tr>
+				<td style="padding:10px 50px 0px 15px;">{{ user.adresse }}</td>
+				<td style="padding:10px 50px 0px 15px;"></td>
+				<td style="padding: 10px 15px 0px 50px;">
+					{{project.IdClient.adresse}}
+				</td>
+			</tr>
+			<tr>
+				<td style="padding:0px 50px 5px 15px;">{{ user.zip }} {{ user.city }}</td>
+				<td style="padding:0px 50px 5px 15px;"></td>
+				<td style="padding:0px 15px 5px 50px;">
+					{{project.IdClient.zip}}
+					{{project.IdClient.city}}
+				</td>
+			</tr>
+			<tr>
+				<td style="padding:5px 50px 0px 15px;">Tél.: {{ user.phone }}</td>
+				<td style="padding:5px 50px 0px 15px;"></td>
+				<td style="padding: 5px 15px 0px 50px;"></td>
+			</tr>
+			<tr>
+				<td style="padding:0px 50px 5px 15px;">mail : {{ user.email }}</td>
+				<td style="padding:0px 50px 5px 15px;"></td>
+				<td style="padding:0px 15px 5px 50px;"></td>
+			</tr>
+			<tr>
+				<td style="padding: 5px 50px 10px 15px;">SIRET : {{ user.siret }}</td>
+				<td style="padding: 5px 50px 10px 15px;"></td>
+				<td style="padding: 5px 15px 10px 50px;"></td>
+			</tr>
+		</tbody>
+	</table>
+	<div style="margin:50px 0;">
+		<h3 style="color: #940143; text-align:center;">{{ project.name }}</h3>
+	</div>
+	<div class="jumbotron">
+		<h4 class="lead" style="color: #940143;">Période du
+			{{ from | date('d-m-Y') }}
+			au
+			{% if to != today %}
+			{{ to | date('d-m-Y') }}
+			{% else %}
+			{{ today | date('d-m-Y') }}
+			{% endif %}
+		</h4>
+		<hr class="my-4">
+		<table style="margin: 25px 80px 15px; border: 1px solid black; width:100%;" class="table table-hover">
+			<thead>
+				<tr style="text-align: center; padding:20px; background-color:#940143; color:white;">
+					<th colrow="60%"
+						style="padding:10px 20px; border-bottom: 1px solid black; border-right: 1px solid black;">
+						Prestations effectuées</th>
+					{% if project.price > 0 %}
+					<th colrow="20%"
+						style="padding:10px 20px; border-bottom: 1px solid black; border-right: 1px solid black;">Heures
+						travaillées</th>
+					<th colrow="20%" style="padding:10px 20px; border-bottom: 1px solid black;">Taux horaire</th>
+					{% else %}
+					<th colspan="2" colrow="20%" style="padding:10px 20px; border-bottom: 1px solid black;">Tarif au
+						forfait</th>
+
+					{% endif %}
+				</tr>
+			</thead>
+			<tbody>
+
+				<tr style="text-align: left; padding:20px;">
+					<td style="padding:10px 20px;border-bottom: 1px solid black; border-right: 1px solid black;">
+						{{ prestation }}
+						<br />
+						{{ project.name }}</td>
+					{% if project.price > 0 %}
+					{% if hour != null %}
+					<td style="padding:10px 20px; border-bottom: 1px solid black; border-right: 1px solid black;">
+						{{hour}}
+						heures</td>
+					{% else %}
+					<td style="padding:10px 20px; border-bottom: 1px solid black; border-right: 1px solid black;">
+						{{hours}}
+						heures *</td>
+					{% endif %}
+					<td style="padding:10px 20px; border-bottom: 1px solid black;">{{project.price}}
+						€/heure</td>
+					{% else %}
+					<td colspan="2" style="padding:10px 20px; border-bottom: 1px solid black; text-align:center">
+						{{project.forfait}} €</td>
+
+					{% endif %}
+
+				</tr>
+				<tr style="font-weight: bold; padding:20px;">
+					<td colspan="2" style="padding:10px 20px; border-right: 1px solid black;" colrow="80%">Montant total
+						:
+					</td>
+					<td style="text-align:right; margin-right:10px; padding:10px 40px; color: #940143;" colrow="20%">
+						{% if project.price > 0  %}
+						{% if hour != null %}
+						{{ hour * project.price }}
+						€
+						{% else %}
+						{{ hours * project.price }}
+						€*
+						{% endif %}
+
+						{% else %}
+						{{ project.forfait }} €
+
+						{% endif %}</td>
+				</tr>
+
+			</tbody>
+		</table>
+		{% if project.price > 0 and hour == null %}
+		<p style="font-size:12px; margin: 0 80px 15px; color:#940143;">* {{ message }}</p>
+		{% endif %}
+
+		<p style="margin: 0 80px;">TVA non applicable - article 293 B du CGI</p>
+	</div>
+	<div style="margin:30px 0;">
+		<p>Payable à {{ user.fistname }} {{ user.name }} par virement bancaire</p>
+		<p>Date de paiement :
+			{{ payDate }}</p>
+
+	</div>
+	<page_footer>
+		<p style="color: #940143; text-align:center; font-size:12px">Dans votre intérêt, conservez vos factures sans
+			limite de temps</p>
+
+
+	</page_footer>
+</page>
