@@ -7,6 +7,17 @@ header {
     padding: 0 0 100px;
 }
 
+.error {
+    text-align: center; 
+    padding: 50px; color: antiquewhite; 
+    font-family: cursive; 
+    background-image: url(../img/foret.webp);
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat; 
+    margin-top: 100px;
+}
+
 #date_facture {
     width: 25%;
 }

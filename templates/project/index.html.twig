@@ -6,7 +6,7 @@
 	{{ form_start(form) }}
 	{{ form_errors(form)}}
 	{{ form_widget(form) }}
-	<button class="btn btn-outline-warning mb-3">{{ button_label|default('Chercher') }}</button>
+	<button class="btn btn-outline-warning mb-3 ml-3">{{ button_label|default('Chercher') }}</button>
 	{{ form_end(form) }}
 	{% for label, messages in app.flashes %}
 		{% for message in messages %}
