@@ -26,7 +26,6 @@ class TasksType extends AbstractType
                 'label'=>'Dâte d\'exécution de la tâche',
                 'widget' => 'single_text',
                 'html5' => false,
-                // 'format' => 'dd-MM-yyyy', // ou tout autre format que vous préférez
             ])
             ->add('hourWorked', null, [
                 'label'=>'Nombre d\'heures travaillées sur la tâche'
@@ -34,9 +33,6 @@ class TasksType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label'=>'Description de la tâche'
             ])
-          
-           // ->add('idTask',ProjectType::class, [
-           //    'by_reference' => false])
         ;
     }
 

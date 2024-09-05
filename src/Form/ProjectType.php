@@ -31,7 +31,7 @@ class ProjectType extends AbstractType
             ->add('forfait', null, [
                 'label'=>'Tarif au forfait'
             ])
-          //  ->add('idProject', TasksType::class)
+          
         ;
     }
 
