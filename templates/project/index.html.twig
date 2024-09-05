@@ -3,51 +3,60 @@
 {% endblock %}
 {% block body %}
 	<h1 class='my-5'>Mes projets</h1>
-	{{ form_start(form) }}
-	{{ form_errors(form)}}
-	{{ form_widget(form) }}
-	<button class="btn btn-outline-warning mb-3 ml-3">{{ button_label|default('Chercher') }}</button>
-	{{ form_end(form) }}
-	{% for label, messages in app.flashes %}
-		{% for message in messages %}
-			<div class="alert alert-{{ label }} alert-dismissible fade show">
-				{{ message }}
-			</div>
-		{% endfor %}
-	{% endfor %}
-	<table class="table py-3">
-		<thead class="table-warning">
-			<tr scope="col">
-				<th>Nom du projet</th>
-				<th scope="col">Tarif (horaire ou au forfait)</th>
-				<th scope="col">Client</th>
-				<th scope="col">Statut</th>
-				<th scope="col"></th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for project in projects %}
-				<tr class="table-primary">
-					<td style = "vertical-align: middle;">{{ project.name }}</td>
-				{% if project.price > 0 %}
-					<td style = "vertical-align: middle;">{{ project.price }} €/heure</td>
-				{% else %}
-					<td style = "vertical-align: middle;">{{ project.forfait }} €</td>
-				{% endif %}	
-					<td style = "vertical-align: middle;">{{project.IdClient.name}}</td>
-					{% if project.endDate == null  %}
-					<td style="color:#20c997; vertical-align: middle;">En cours</td>
-				{% else %}
-					<td style="color:#e35d6a; vertical-align: middle;">Clôturé le {{ project.endDate | date('d-m-Y') }}</td>
-				{% endif %}	
-					<td>
-						<a class="btn btn-warning" href="{{ path('tasks_index', {'id': project.id}) }}">Voir ce projet</a>
-						<a class="btn btn-secondary" href="{{ path('project_edit', {'id': project.id}) }}">Modifier ce projet</a>
-					</td>
-				</tr>
+	<div class='my-4 px-4'>
+	<div class='mb-4' style='width:75%'>
+		{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+		<div class="mb-3">
+			{{ form_label(form.name, null, {'label_attr': {'class': 'form-label'}}) }}
+			{{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+			{{ form_errors(form.name) }}
+		</div>
+		<button class="btn btn-outline-warning">{{ button_label|default('Chercher') }}</button>
+		{{ form_end(form) }}
+	</div>	
+		{% for label, messages in app.flashes %}
+			{% for message in messages %}
+				<div class="alert alert-{{ label }} alert-dismissible fade show">
+					{{ message }}
+				</div>
 			{% endfor %}
-		</tbody>
-	</table>
+		{% endfor %}
+		<table class="table py-3">
+			<thead class="table-warning">
+				<tr scope="col">
+					<th>Nom du projet</th>
+					<th scope="col">Tarif (horaire ou au forfait)</th>
+					<th scope="col">Client</th>
+					<th scope="col">Statut</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for project in projects %}
+					<tr class="table-primary">
+						<td style="vertical-align: middle;">{{ project.name }}</td>
+						{% if project.price > 0 %}
+							<td style="vertical-align: middle;">{{ project.price }}
+								€/heure</td>
+						{% else %}
+							<td style="vertical-align: middle;">{{ project.forfait }}
+								€</td>
+						{% endif %}
+						<td style="vertical-align: middle;">{{project.IdClient.name}}</td>
+						{% if project.endDate == null  %}
+							<td style="color:#20c997; vertical-align: middle;">En cours</td>
+						{% else %}
+							<td style="color:#e35d6a; vertical-align: middle;">Clôturé le
+								{{ project.endDate | date('d-m-Y') }}</td>
+						{% endif %}
+						<td>
+							<a class="btn btn-warning" href="{{ path('tasks_index', {'id': project.id}) }}">Voir ce projet</a>
+							<a class="btn btn-secondary" href="{{ path('project_edit', {'id': project.id}) }}">Modifier ce projet</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 
-	{# <a href="{{ path('project_new') }}">Create new</a> #}
-{% endblock %}
+		{# <a href="{{ path('project_new') }}">Create new</a> #}
+	{% endblock %}

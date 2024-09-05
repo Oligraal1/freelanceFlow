@@ -8,43 +8,73 @@
     {% endfor %}
 
     <h1 class="mt-4">Inscription</h1>
-<div class="mx-4" style="width:50%">
-{{ form_start(registrationForm) }}
-{{ form_row(registrationForm.email) }}
-{{ form_row(registrationForm.plainPassword, {
-            label: 'Mot de passe'
+
+    <div class="mx-4" style="width:50%">
+        {{ form_start(registrationForm, {'attr': {'class': 'form-horizontal'}}) }}
+
+        {{ form_row(registrationForm.email, {
+            'attr': {'class': 'form-control'},
+            'label_attr': {'class': 'form-label'}
         }) }}
- <h2 class="mt-4">Informations complémentaires</h2>
-{{ form_row(registrationForm.fistname, {
-            label: 'Prénom'
-        })}}
+
+        {{ form_row(registrationForm.plainPassword, {
+            label: 'Mot de passe',
+            'attr': {'class': 'form-control'},
+            'label_attr': {'class': 'form-label'}
+        }) }}
+
+        <h2 class="mt-4">Informations complémentaires</h2>
+
+        {{ form_row(registrationForm.fistname, {
+            label: 'Prénom',
+            'attr': {'class': 'form-control'},
+            'label_attr': {'class': 'form-label'}
+        }) }}
+
         {{ form_row(registrationForm.name, {
-            label: 'Nom'
-        })}}
+            label: 'Nom',
+            'attr': {'class': 'form-control'},
+            'label_attr': {'class': 'form-label'}
+        }) }}
+
         {{ form_row(registrationForm.adresse, {
-            label: 'Adresse'
-        })}}
+            label: 'Adresse',
+            'attr': {'class': 'form-control'},
+            'label_attr': {'class': 'form-label'}
+        }) }}
+
         {{ form_row(registrationForm.zip, {
-            label: 'Code Postal'
-        })}}
+            label: 'Code Postal',
+            'attr': {'class': 'form-control'},
+            'label_attr': {'class': 'form-label'}
+        }) }}
+
         {{ form_row(registrationForm.city, {
-            label: 'Ville'
-        })}}
+            label: 'Ville',
+            'attr': {'class': 'form-control'},
+            'label_attr': {'class': 'form-label'}
+        }) }}
+
         {{ form_row(registrationForm.phone, {
-            label: 'Téléphone'
-        })}}
+            label: 'Téléphone',
+            'attr': {'class': 'form-control'},
+            'label_attr': {'class': 'form-label'}
+        }) }}
 
-{{ form_row(registrationForm.siret, {
-            label: 'Siret'
-        })}}
+        {{ form_row(registrationForm.siret, {
+            label: 'Siret',
+            'attr': {'class': 'form-control'},
+            'label_attr': {'class': 'form-label'}
+        }) }}
+
         {{ form_row(registrationForm.profession, {
-            label: 'Activité'
-        })}}
+            label: 'Activité',
+            'attr': {'class': 'form-control'},
+            'label_attr': {'class': 'form-label'}
+        }) }}
 
+        <button type="submit" class="btn btn-secondary mb-4">Enregistrer</button>
 
-<button type="submit" class="btn btn-secondary mb-4">Enregistrer</button>
-{{ form_end(registrationForm) }}
-
-</div>
-   
+        {{ form_end(registrationForm) }}
+    </div>
 {% endblock %}

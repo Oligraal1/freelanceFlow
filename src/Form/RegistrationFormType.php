@@ -32,7 +32,7 @@ class RegistrationFormType extends AbstractType
             ->add('city', null, [
                 'label' => 'Ville',
             ])
-            ->add('mail', null, [
+            ->add('email', null, [
                 'label' => 'Adresse email',
             ])
             ->add('phone', null, [
